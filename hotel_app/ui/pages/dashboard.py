@@ -6,8 +6,9 @@ from ui.widgets import card_frame, section_label, build_tree, stat_card
 from database.db_manager import get_connection
 
 class DashboardPage(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, hotel_info=None):
         super().__init__(master, bg=BG)
+        self.hotel_info = hotel_info or {}
         self._build()
 
     def _build(self):
@@ -15,7 +16,8 @@ class DashboardPage(tk.Frame):
         hdr = tk.Frame(self, bg=BG)
         hdr.pack(fill="x", padx=25, pady=(25, 0))
         
-        tk.Label(hdr, text="Moko Hotel", bg=BG, fg=ACCENT,
+        hotel_name = self.hotel_info.get('hotel_name', 'Hotel Management')
+        tk.Label(hdr, text=hotel_name, bg=BG, fg=ACCENT,
                  font=("Segoe UI Bold", 22)).pack(side="left")
         
         self.date_lbl = tk.Label(hdr, text="", bg=BG, fg=TEXT_DIM, font=FONT_LABEL)

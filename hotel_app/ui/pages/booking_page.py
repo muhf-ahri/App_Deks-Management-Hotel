@@ -8,9 +8,10 @@ from database.db_manager import get_connection
 from tkinter import ttk 
 from datetime import timedelta
 
-class BookingPage(tk.Frame): # <--- INI YANG DICARI main.py
-    def __init__(self, master):
+class BookingPage(tk.Frame):
+    def __init__(self, master, hotel_info=None):
         super().__init__(master, bg=BG)
+        self.hotel_info = hotel_info or {}
         self.selected_id = None
         self._build()
 

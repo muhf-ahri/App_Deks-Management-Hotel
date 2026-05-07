@@ -5,8 +5,9 @@ from ui.widgets import styled_btn, styled_entry, build_tree, card_frame
 from database.db_manager import get_connection
 
 class ServiceManagePage(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, hotel_info=None):
         super().__init__(master, bg=BG)
+        self.hotel_info = hotel_info or {}
         self.selected_id = None
         self._build()
 

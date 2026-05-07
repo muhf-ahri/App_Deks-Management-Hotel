@@ -14,13 +14,39 @@ def get_connection():
         print(f"❌ Koneksi SQLyog Gagal: {e}")
         return None
 
+def verify_hotel_login(hotel_name, password):
+    """Verifikasi login berdasarkan nama hotel dan password dari tabel hotels"""
+    conn = get_connection()
+    if not conn:
+        return None
+    
+    c = conn.cursor(dictionary=True)
+    try:
+        query = "SELECT id, hotel_name, location FROM hotels WHERE hotel_name = %s AND password = %s"
+        c.execute(query, (hotel_name, password))
+        return c.fetchone()  # Mengembalikan dict {id, hotel_name, location} atau None
+    except Exception as e:
+        print(f"Login Error: {e}")
+        return None
+    finally:
+        c.close()
+        conn.close()
+
 def init_db():
     conn = get_connection()
     if not conn: return
     
-    # Pake dictionary=True biar init_db juga konsisten
-    cursor = conn.cursor(dictionary=True) 
+    cursor = conn.cursor(dictionary=True)
     try:
+        # Tabel Hotels (untuk login multi-hotel)
+        cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            hotel_name VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            location VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB''')
+
         # Tabel Tamu
         cursor.execute('''CREATE TABLE IF NOT EXISTS guests (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,9 +84,30 @@ def init_db():
         ) ENGINE=InnoDB''')
 
         conn.commit()
-        print("✅ Database db_reservasi Ready, Nyet!")
+        print("✅ Database db_reservasi Ready!")
     except Error as e:
         print(f"❌ Error Pas Bikin Tabel: {e}")
     finally:
         cursor.close()
+        conn.close()
+
+def seed_hotel_if_empty():
+    """Tambahkan data hotel default jika tabel hotels masih kosong"""
+    conn = get_connection()
+    if not conn: return
+    c = conn.cursor(dictionary=True)
+    try:
+        c.execute("SELECT COUNT(*) as total FROM hotels")
+        total = c.fetchone()['total']
+        if total == 0:
+            c.execute(
+                "INSERT INTO hotels (hotel_name, password, location) VALUES (%s, %s, %s)",
+                ("Moko Hotel", "moko123", "Bandung, Jawa Barat")
+            )
+            conn.commit()
+            print("✅ Data hotel default berhasil ditambahkan! (Moko Hotel / moko123)")
+    except Exception as e:
+        print(f"Seed hotel error: {e}")
+    finally:
+        c.close()
         conn.close()
