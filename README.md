@@ -1,102 +1,181 @@
-# Hotel Management System (Moko Hotel)
+# 🏨 Hotel Management System (Moko Hotel)
 
-Sistem manajemen hotel berbasis **Python (Tkinter)** untuk mengelola data **Kamar**, **Tamu**, **Reservasi**, dan **Layanan Kamar**. Proyek ini dibuat untuk kebutuhan aplikasi desktop.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Tkinter](https://img.shields.io/badge/GUI-Tkinter-orange.svg)](https://docs.python.org/3/library/tkinter.html)
+[![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1.svg)](https://www.mysql.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
----
+> A modern desktop application for hotel management built with Python and Tkinter. Streamline your hotel operations with intuitive interfaces for room management, guest handling, reservations, and services.
 
-## Fitur Utama
+![Hotel Management App](https://via.placeholder.com/800x400/4A90E2/FFFFFF?text=Hotel+Management+System+Screenshot)  
+_Placeholder for app screenshot - Add your actual screenshot here_
 
-- **Dashboard**: ringkasan statistik (kamar ready/terisi/tamu aktif) dan daftar aktivitas reservasi terbaru.
-- **Manajemen Kamar**: tambah, edit, hapus, dan lihat detail deskripsi kamar.
-- **Manajemen Tamu**: tambah, edit, hapus, pencarian nama, dan filter negara.
-- **Reservasi**:
-  - tambah reservasi
-  - edit reservasi (dibatasi untuk reservasi yang belum selesai)
-  - **Check-In** dan **Check-Out**
-  - pembatalan reservasi
-  - perhitungan total menginap pada saat **Check-Out** (termasuk penyesuaian jika check-out lebih awal)
-- **Master Layanan & Layanan Kamar**:
-  - master layanan/menu
-  - pesan layanan untuk tamu pada booking status **Checked In**
-  - tandai layanan **Selesai/Delivered**
+## ✨ Features
 
----
+### 🏠 Dashboard
 
-## Teknologi yang Digunakan
+- **Real-time Statistics**: View total rooms, occupied rooms, available rooms, and active guests
+- **Recent Activities**: Monitor latest reservation activities with status updates
+- **Quick Overview**: Get instant insights into hotel occupancy and performance
 
-- **Python**
-- **Tkinter** (GUI)
-- **MySQL** (untuk koneksi data via `mysql.connector`)
+### 🛏️ Room Management
 
-> Catatan: ada file `seed_data.py` yang melakukan seed menggunakan **SQLite**. Pastikan database yang digunakan sesuai dengan konfigurasi aplikasi.
+- **Add/Edit/Delete Rooms**: Full CRUD operations for room inventory
+- **Room Details**: Store and view detailed descriptions for each room
+- **Status Tracking**: Monitor room availability and maintenance status
 
----
+### 👥 Guest Management
 
-## Struktur Proyek (Ringkas)
+- **Guest Database**: Add, edit, and delete guest information
+- **Advanced Search**: Search guests by name with instant results
+- **Country Filtering**: Filter guests by nationality for better organization
 
-- `hotel_app/main.py` : entry point aplikasi dan sidebar navigasi
-- `hotel_app/database/db_manager.py` : inisialisasi tabel di MySQL (`guests`, `rooms`, `bookings`)
-- `hotel_app/ui/pages/` : halaman aplikasi (dashboard, room, guest, booking, service)
-- `hotel_app/ui/widgets.py` : komponen UI reusable (styled button/entry, treeview, card)
-- `hotel_app/utils/constants.py` : konstanta warna & font
-- `hotel_app/utils/helpers.py` : helper format currency, dll.
+### 📋 Reservation System
 
----
+- **Create Reservations**: Book rooms for guests with check-in/check-out dates
+- **Check-In/Check-Out**: Seamless guest arrival and departure management
+- **Reservation Editing**: Modify reservations (restricted to unfinished bookings)
+- **Cancellation**: Cancel reservations when needed
+- **Auto Calculation**: Automatic total cost calculation including early check-out adjustments
 
-## Cara Menjalankan
+### 🍽️ Service Management
 
-1. Pastikan Python terpasang.
-2. Siapkan database **MySQL** bernama `db_reservasi`.
-3. Jalankan aplikasi:
+- **Service Menu**: Manage available hotel services and amenities
+- **Order Services**: Place service orders for checked-in guests
+- **Service Tracking**: Mark services as completed/delivered
+- **Master Services**: Maintain a comprehensive service catalog
 
-```bash
-python hotel_app/main.py
+## 🚀 Installation
+
+### Prerequisites
+
+- **Python 3.8 or higher**
+- **MySQL Server** (for database storage)
+- **Git** (for cloning the repository)
+
+### Step-by-Step Setup
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/muhf-ahri/App_Deks-Management-Hotel.git
+   cd App_Deks-Management-Hotel
+   ```
+
+2. **Install Dependencies**
+
+   ```bash
+   pip install mysql-connector-python
+   ```
+
+3. **Setup MySQL Database**
+   - Create a new database named `db_reservasi`
+
+   ```sql
+   CREATE DATABASE db_reservasi;
+   ```
+
+4. **Configure Database Connection**
+   - Open `hotel_app/database/db_manager.py`
+   - Update the connection parameters in `get_connection()` function:
+     ```python
+     def get_connection():
+         return mysql.connector.connect(
+             host="localhost",      # Change if needed
+             user="root",           # Your MySQL username
+             password="",           # Your MySQL password
+             database="db_reservasi"
+         )
+     ```
+
+5. **Seed Initial Data (Optional)**
+   ```bash
+   python hotel_app/seed_data.py
+   ```
+   > Note: Seed data uses SQLite by default. For MySQL integration, ensure database configuration matches.
+
+## 🎯 Usage
+
+### Running the Application
+
+1. **Start the App**
+
+   ```bash
+   python hotel_app/main.py
+   ```
+
+2. **Navigate Through Features**
+   - Use the left sidebar to switch between different modules
+   - **Dashboard**: View statistics and recent activities
+   - **Data Kamar**: Manage room inventory
+   - **Data Tamu**: Handle guest information
+   - **Reservasi**: Process bookings and check-ins/check-outs
+   - **Master Layanan**: Configure available services
+   - **Layanan Kamar**: Order and track guest services
+
+### Basic Workflow
+
+1. **Add Rooms**: Start by adding your hotel rooms to the system
+2. **Register Guests**: Add guest information as they arrive
+3. **Create Reservations**: Book rooms for guests with specific dates
+4. **Check-In**: Process guest arrivals and assign rooms
+5. **Manage Services**: Order additional services for guests
+6. **Check-Out**: Calculate bills and process departures
+
+## 🏗️ Project Structure
+
+```
+hotel_app/
+├── main.py                 # Application entry point & navigation
+├── seed_data.py           # Database seeding script
+├── database/
+│   └── db_manager.py      # Database connection & initialization
+├── ui/
+│   ├── widgets.py         # Reusable UI components
+│   └── pages/
+│       ├── dashboard.py   # Main dashboard page
+│       ├── room_page.py   # Room management interface
+│       ├── guest_page.py  # Guest management interface
+│       ├── booking_page.py # Reservation system
+│       ├── service_page.py # Service ordering
+│       └── service_manage_page.py # Service catalog management
+└── utils/
+    ├── constants.py       # UI colors & fonts
+    └── helpers.py         # Utility functions
 ```
 
-Aplikasi akan memanggil `init_db()` untuk memastikan tabel yang diperlukan sudah tersedia.
+## 🛠️ Technologies Used
+
+- **Python 3.8+**: Core programming language
+- **Tkinter**: GUI framework for desktop interface
+- **MySQL**: Relational database for data persistence
+- **MySQL Connector/Python**: Database connectivity
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+- Open an issue on GitHub
+- Check the documentation in this README
+- Ensure all dependencies are properly installed
 
 ---
 
-## Konfigurasi Database
-
-Koneksi MySQL ada di `hotel_app/database/db_manager.py` / fungsi `get_connection()`:
-
-- host: `localhost`
-- user: `root`
-- password: _(kosong pada kode saat ini)_
-- database: `db_reservasi`
-
-Jika environment kamu berbeda, silakan sesuaikan kredensial di file terkait.
-
----
-
-## Seed Data
-
-File `hotel_app/seed_data.py` berfungsi untuk mengisi data dummy. Jalankan dengan:
-
-```bash
-python hotel_app/seed_data.py
-```
-
-Namun, karena seed ini memakai **SQLite** (`database/db_reservasi.db`) sementara aplikasi menggunakan **MySQL**, seed hanya akan bekerja jika kamu menjalankan skema/engine yang sama (SQLite vs MySQL) sesuai kebutuhan proyek.
-
----
-
-## Requirement Tambahan
-
-- MySQL Connector/Python:
-
-```bash
-pip install mysql-connector-python
-```
-
----
-
-## Screenshot / Demo
-
-Jika kamu ingin, tambahkan screenshot hasil UI di sini.
-
----
+**Built with ❤️ for efficient hotel management**
 
 ## Lisensi
 
